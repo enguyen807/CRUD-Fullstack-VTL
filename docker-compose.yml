@@ -1,0 +1,53 @@
+version: "3.8"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./backend/dockerfiles/nginx.dockerfile
+    ports:
+      - '8000:80'
+    volumes:
+      - ./backend/src:/var/www/html
+      - ./backend/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: always
+    depends_on:
+      - php
+      - mysql
+  php:
+    build:
+      context: .
+      dockerfile: ./backend/dockerfiles/php.dockerfile
+    volumes:
+      - ./backend/src:/var/www/html:delegated
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    env_file:
+      - ./backend/env/mysql.env
+  composer:
+    build:
+      context: .
+      dockerfile: ./backend/dockerfiles/composer.dockerfile
+    volumes:
+      - ./backend/src:/var/www/html      
+  artisan:
+    build:
+      context: .
+      dockerfile: ./backend/dockerfiles/php.dockerfile
+    volumes:
+      - ./backend/src:/var/www/html
+    entrypoint: ['php', '/var/www/html/artisan']      
+  frontend:
+    build: ./frontend
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+  npm:
+    image: node:14
+    working_dir: /src
+    entrypoint: ['npm']
+    volumes:
+      - ./src:/app
