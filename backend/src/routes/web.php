@@ -17,3 +17,8 @@ $router->get('/', function () {
     $data = array("a" => "Apple", "b" => "Ball", "c" => "Cat");
     return response(json_encode($data), 200);
 });
+
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->get("customers", ['uses' => 'CustomerController@showAllCustomers']);
+});
+
