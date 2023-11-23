@@ -9,7 +9,6 @@ services:
     volumes:
       - ./backend/src:/var/www/html
       - ./backend/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    restart: always
     depends_on:
       - php
       - mysql
@@ -24,6 +23,8 @@ services:
     platform: linux/amd64
     env_file:
       - ./backend/env/mysql.env
+    ports:
+      - "3356:3306"      
   composer:
     build:
       context: .
@@ -47,7 +48,7 @@ services:
     tty: true
   npm:
     image: node:14
-    working_dir: /src
+    working_dir: /frontend/src
     entrypoint: ['npm']
     volumes:
-      - ./src:/app
+      - ./frontend/src:/app/src

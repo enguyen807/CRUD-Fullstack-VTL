@@ -6,4 +6,4 @@ USER lumen
 
 WORKDIR /var/www/html
  
-ENTRYPOINT [ "composer", "--ignore-platform-reqs" ]
+ENTRYPOINT [ "composer" ]
