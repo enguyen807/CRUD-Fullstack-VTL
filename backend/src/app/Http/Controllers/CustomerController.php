@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function showAllCustomers()
+    public function index()
     {
-        return response()->json(Customer::all());
+        return response()->json([ 'data' => Customer::all()]);
     }
 }
