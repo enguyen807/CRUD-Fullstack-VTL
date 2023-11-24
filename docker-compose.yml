@@ -21,10 +21,13 @@ services:
   mysql:
     image: mysql:5.7
     platform: linux/amd64
+    volumes:
+      - data:/var/lib/mysql
+    restart: always
     env_file:
       - ./backend/env/mysql.env
     ports:
-      - "3356:3306"      
+      - "3356:3306"
   composer:
     build:
       context: .
@@ -48,7 +51,12 @@ services:
     tty: true
   npm:
     image: node:14
+    stdin_open: true
+    tty: true
     working_dir: /frontend/src
     entrypoint: ['npm']
     volumes:
       - ./frontend/src:/app/src
+
+volumes:
+  data:
