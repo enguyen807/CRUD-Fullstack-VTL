@@ -13,7 +13,7 @@ class Customer extends Model
      * @var string[]
      */
     protected $fillable = [
-        'first_name', 'last_name', 'birth_date', 'username',
+        'first_name', 'last_name', 'birth_date', 'username', 'password'
     ];
 
     /**
@@ -23,5 +23,18 @@ class Customer extends Model
      */
     protected $hidden = [
         'password',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'first_name' => 'string',
+        'last_name' => 'string',
+        'birth_date' => 'string',
+        'username' => 'string',
+        'password' => 'string',
     ];
 }
