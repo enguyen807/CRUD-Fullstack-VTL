@@ -20,5 +20,8 @@
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get("customers", ['uses' => 'CustomerController@index']);
+    $router->post("customers", ['uses' => 'CustomerController@store']);
+    $router->put("customers/{id}", ['uses' => 'CustomerController@update']);
+    $router->delete("customers/{id}", ['uses' => 'CustomerController@destroy']);
 });
 
