@@ -42,7 +42,9 @@ services:
       - ./backend/src:/var/www/html
     entrypoint: ['php', '/var/www/html/artisan']      
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      target: develop
     ports:
       - '8080:8080'
     volumes:
@@ -53,10 +55,10 @@ services:
     image: node:14
     stdin_open: true
     tty: true
-    working_dir: /frontend/src
+    working_dir: /app
     entrypoint: ['npm']
     volumes:
-      - ./frontend/src:/app/src
+      - ./frontend:/app
 
 volumes:
   data:
