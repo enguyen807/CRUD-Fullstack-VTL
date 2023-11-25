@@ -11,11 +11,11 @@ class CustomerUpdateTest extends TestCase
     public function it_can_update_a_customer()
     {
         $parameters = [
-            'first_name' => 'George',
-            'last_name'  => 'Santos',
-            'birth_date' => '11.03.1975',
-            'username'   => 'gsantos',
-            'password'   => 'password'
+            'first_name' => $this->faker->firstname,
+            'last_name'  => $this->faker->lastname,
+            'birth_date' => $this->faker->dateTimeBetween('1950-01-01', '1999-01-01')->format('d.m.Y'),
+            'username'   => $this->faker->unique()->username,
+            'password'   => $this->faker->password
         ];
 
         $this->json('put', 'api/customers/4', $parameters)

@@ -11,11 +11,11 @@ class CustomerCreateTest extends TestCase
     public function it_can_create_a_customer(): void
     {
         $parameters = [
-            'first_name' => 'John',
-            'last_name'  => 'Smith',
-            'birth_date' => '28.07.1986',
-            'username'   => 'jsmith234',
-            'password'   => 'password'
+            'first_name' => $this->faker->firstname,
+            'last_name'  => $this->faker->lastname,
+            'birth_date' => $this->faker->dateTimeBetween('1950-01-01', '1999-01-01')->format('d.m.Y'),
+            'username'   => $this->faker->unique()->username,
+            'password'   => $this->faker->password
         ];
 
         $this->json('post', 'api/customers', $parameters)
