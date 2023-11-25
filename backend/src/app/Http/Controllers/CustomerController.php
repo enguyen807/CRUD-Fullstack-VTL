@@ -28,6 +28,12 @@ class CustomerController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $customer = Customer::where('username', '=', $request->input('username'))->first();
+
+        if ($customer) {
+            return response()->json(['message'=> 'User already exists!'], JsonResponse::HTTP_CONFLICT);
+        }
+
         $customer = Customer::create([
             'first_name' => $request->input('first_name'),
             'last_name'  => $request->input('last_name'),
