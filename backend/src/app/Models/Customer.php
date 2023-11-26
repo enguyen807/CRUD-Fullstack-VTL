@@ -23,6 +23,8 @@ class Customer extends Model
      */
     protected $hidden = [
         'password',
+        'created_at',
+        'updated_at'
     ];
 
     /**
