@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
 import BaseCard   from './components/BaseCard/BaseCard.vue'
 import BaseButton from './components/BaseButton/BaseButton.vue'
 import BaseTable  from './components/BaseTable/BaseTable.vue'
@@ -28,7 +27,6 @@ onMounted(async () => {
 
 <template>
   <BaseCard>
-    <HelloWorld msg="Vite + Vue" />
     <BaseButton label="Test"></BaseButton>
     <BaseTable :data="customers" background-color="light" is-striped is-hoverable is-editable v-if="customers.length"></BaseTable>
   </BaseCard>
