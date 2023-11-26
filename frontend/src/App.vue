@@ -1,17 +1,37 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
+import BaseCard   from './components/BaseCard/BaseCard.vue'
+import BaseButton from './components/BaseButton/BaseButton.vue'
+import BaseTable  from './components/BaseTable/BaseTable.vue'
+
+interface Customer {
+    id: number,
+    first_name: string,
+    last_name: string,
+    birth_date: string,
+    username: string
+}
+
+
+const customers = ref<Customer[]>([]);
+
+onMounted(async () => {
+  const response = await fetch("http://localhost:8000/api/customers", {
+    method: 'get'
+  });
+  const data = await response.json();
+  customers.value = data.data;
+
+})
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <BaseCard>
+    <HelloWorld msg="Vite + Vue" />
+    <BaseButton label="Test"></BaseButton>
+    <BaseTable :data="customers" background-color="light" is-striped is-hoverable is-editable v-if="customers.length"></BaseTable>
+  </BaseCard>
 </template>
 
 <style scoped>
