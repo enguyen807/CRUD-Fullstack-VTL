@@ -48,7 +48,7 @@ services:
     ports:
       - '8080:8080'
     volumes:
-      - ./frontend/src:/app/src
+      - ./frontend:/app
     stdin_open: true
     tty: true
   npm:
