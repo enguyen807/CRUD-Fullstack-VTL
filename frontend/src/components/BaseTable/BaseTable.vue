@@ -41,7 +41,7 @@ const classes = computed(() => ({
                 <th v-for="(header, index) in tableHeaders" :key="index" scope="col">
                     {{ header }}
                 </th>
-                <th v-if="props.isEditable">
+                <th v-if="props.isEditable" scope="col">
                     Actions
                 </th>
             </tr>
