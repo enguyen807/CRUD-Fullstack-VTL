@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import BaseCard   from './components/BaseCard/BaseCard.vue'
-import BaseButton from './components/BaseButton/BaseButton.vue'
 import BaseTable  from './components/BaseTable/BaseTable.vue'
 
 interface Customer {
@@ -27,7 +26,6 @@ onMounted(async () => {
 
 <template>
   <BaseCard>
-    <BaseButton label="Test"></BaseButton>
     <BaseTable :data="customers" background-color="light" is-striped is-hoverable is-editable v-if="customers.length"></BaseTable>
   </BaseCard>
 </template>
