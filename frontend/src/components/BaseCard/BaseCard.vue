@@ -3,8 +3,8 @@ import "./BaseCard.style.css";
 import { computed } from 'vue';
 
 const props = withDefaults(
-    defineProps<{ 
-        isRounded?: boolean
+    defineProps<{
+        isRounded?: boolean,
         backgroundColor?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'light' | 'dark' }>(), 
         { isRounded: true, backgroundColor: 'light' }
 );
