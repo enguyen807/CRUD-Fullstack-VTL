@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 .app-card {
     @apply shadow-lg my-2 px-6 py-4 overflow-hidden;
 }

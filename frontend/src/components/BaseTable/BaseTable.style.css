@@ -1,5 +1,3 @@
-@tailwind utilities;
-
 .app-table {
     @apply w-full text-sm text-left rtl:text-right text-stone-500 bg-white;
 }
