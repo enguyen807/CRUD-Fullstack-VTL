@@ -1,0 +1,41 @@
+@tailwind utilities;
+
+.app-button {
+  @apply shadow-md;
+}
+
+.app-button--rounded {
+  @apply rounded-md;
+}
+
+.app-button--large {
+  @apply h-12 px-6 text-lg;
+}
+
+.app-button--medium {
+  @apply h-10 px-5 text-base;
+}
+
+.app-button--small {
+  @apply h-8 px-4 text-sm;
+}
+
+.app-button--primary {
+  @apply bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+}
+
+.app-button--secondary {
+  @apply bg-stone-500 text-white hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-400 focus:ring-opacity-75;
+}
+
+.app-button--success {
+  @apply bg-emerald-500 text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-75;
+}
+
+.app-button--danger {
+  @apply bg-red-500 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75;
+}
+
+.app-button--warning {
+  @apply bg-amber-500 text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-75;
+}
