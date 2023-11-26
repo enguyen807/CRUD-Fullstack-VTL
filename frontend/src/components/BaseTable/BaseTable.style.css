@@ -1,0 +1,86 @@
+@tailwind utilities;
+
+.app-table {
+    @apply w-full text-sm text-left rtl:text-right text-stone-500;
+}
+
+.app-table.app-table--striped > tbody > tr:nth-child(even) {
+    @apply bg-stone-100;
+}
+
+.app-table--rounded { 
+    @apply rounded-md;
+}
+
+.app-table > thead {
+    @apply uppercase;
+}
+
+.app-table th {
+    @apply px-6 py-4;
+}
+
+.app-table td {
+    @apply px-6 py-3;
+}
+
+.app-table--primary > thead {
+    @apply bg-blue-100 text-stone-700/75;
+}
+
+
+.app-table--secondary > thead {
+    @apply bg-stone-100 text-stone-700/75;
+}
+
+.app-table--success > thead {
+    @apply bg-emerald-100 text-stone-700/75;
+}
+
+.app-table--danger > thead {
+    @apply bg-red-100 text-stone-700/75;
+}
+
+.app-table--warning > thead {
+    @apply bg-amber-100 text-stone-700/75;
+}
+
+.app-table--light > thead  {
+    @apply bg-white text-stone-700 border-b border-stone-200;
+}
+
+.app-table--dark > thead {
+    @apply bg-stone-900 text-white;
+}
+
+.app-table > tbody > tr {
+    @apply border-b border-stone-200;
+}
+
+.app-table--primary.app-table--hoverable > tbody > tr {
+    @apply hover:bg-blue-50;
+}
+
+.app-table--secondary.app-table--hoverable > tbody > tr {
+    @apply hover:bg-stone-50;
+}
+
+.app-table--success.app-table--hoverable > tbody > tr {
+    @apply hover:bg-emerald-50;
+}
+
+.app-table--danger.app-table--hoverable > tbody > tr {
+    @apply hover:bg-red-50;
+}
+
+.app-table--warning.app-table--hoverable > tbody > tr {
+    @apply hover:bg-amber-50;
+}
+
+.app-table--light.app-table--hoverable > tbody > tr {
+    @apply hover:bg-stone-50;
+}
+
+.app-table--dark.app-table--hoverable > tbody > tr {
+    @apply hover:bg-stone-50;
+}
