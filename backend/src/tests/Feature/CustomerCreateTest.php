@@ -14,7 +14,7 @@ class CustomerCreateTest extends TestCase
             'first_name' => $this->faker->firstname,
             'last_name'  => $this->faker->lastname,
             'birth_date' => $this->faker->dateTimeBetween('1950-01-01', '1999-01-01')->format('d.m.Y'),
-            'username'   => $this->faker->unique()->username,
+            'username'   => $this->faker->unique()->userName,
             'password'   => $this->faker->password
         ];
 
@@ -29,7 +29,6 @@ class CustomerCreateTest extends TestCase
                         'last_name',
                         'birth_date',
                         'username',
-                        'created_at',
                     ]
                 ]
             );
