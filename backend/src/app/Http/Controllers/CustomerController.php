@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Lumen\Http\ResponseFactory;
-use PhpParser\Node\Stmt\TryCatch;
 
 class CustomerController extends Controller
 {
@@ -28,18 +26,26 @@ class CustomerController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $customer = Customer::where('username', '=', $request->input('username'))->first();
+        $fields = $this->validate($request, [
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'username' => 'required|string|min:6|max:50|unique:customers,username',
+            'birth_date' => 'required|date_format:d.m.Y|before:today|after:1900-01-01',
+            'password' => 'required|min:6|max:50|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+        ]);
+
+        $customer = Customer::where('username', '=', $fields['username'])->first();
 
         if ($customer) {
             return response()->json(['message'=> 'User already exists!'], JsonResponse::HTTP_CONFLICT);
         }
 
         $customer = Customer::create([
-            'first_name' => $request->input('first_name'),
-            'last_name'  => $request->input('last_name'),
-            'birth_date' => $request->input('birth_date'),
-            'username'   => $request->input('username'),
-            'password'   => Hash::make($request->input('password')),
+            'first_name' => $fields['first_name'],
+            'last_name'  => $fields['last_name'],
+            'birth_date' => $fields['birth_date'],
+            'username'   => $fields['username'],
+            'password'   => Hash::make($fields['password']),
         ]);
         return response()->json([ 'data' => $customer ], 200);
     }
@@ -52,15 +58,23 @@ class CustomerController extends Controller
      */
     public function update(int $id, Request $request): JsonResponse
     {
+        $fields = $this->validate($request, [
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'username' => 'required|string|min:6|max:50|unique:customers,username',
+            'birth_date' => 'required|date_format:d.m.Y|before:today|after:1900-01-01',
+            'password' => 'required|min:6|max:50|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+        ]);
+
         try
         {
             $customer = Customer::findOrFail($id);
             $customer->update([
-                'first_name' => $request->input('first_name'),
-                'last_name'  => $request->input('last_name'),
-                'birth_date' => $request->input('birth_date'),
-                'username'   => $request->input('username'),
-                'password'   => Hash::make($request->input('password')),
+                'first_name' => $fields('first_name'),
+                'last_name'  => $fields('last_name'),
+                'birth_date' => $fields('birth_date'),
+                'username'   => $fields('username'),
+                'password'   => Hash::make($fields('password')),
             ]);
     
             return response()->json([ 'data' => $customer ], 200);
