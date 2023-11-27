@@ -1,0 +1,7 @@
+.app-input {
+    @apply block w-full text-stone-500;
+}
+
+.app-input > input {
+    @apply mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black;
+}
