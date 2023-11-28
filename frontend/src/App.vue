@@ -7,6 +7,9 @@ import BaseCard from './components/BaseCard/BaseCard.vue'
 import BaseTable from './components/BaseTable/BaseTable.vue'
 import BaseInput from './components/BaseInput/BaseInput.vue'
 
+import EyeOpenSVG from './assets/eye-open.svg'
+// import EyeCloseSVG from './assets/eye-close.svg'
+
 interface Customer {
   id?: number,
   password?: string,
@@ -20,6 +23,7 @@ interface CustomerErrors {
   [key: string]: string;
 }
 
+const show = ref<boolean>(true);
 const customers = ref<Customer[]>([]);
 const newCustomer = reactive<CustomerErrors>({
   first_name: '',
@@ -37,9 +41,10 @@ const customerErrors = reactive<CustomerErrors>({
 })
 
 const handleSubmit = (event: Event) => {
+  // show/hide password 
   // submit form
   // handle similar username error
-  // 
+  //
 
   console.log(event);
 }
@@ -122,10 +127,18 @@ onMounted(async () => {
             <BaseInput 
               id="password" 
               label="Password" 
-              type="password" 
+              :type="show ? 'password' : 'text'"
               v-model="newCustomer.password"
               :error-msg="customerErrors.password_errors" 
-            />
+              toggle-password
+            >
+              <template #show_hide_password>
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                  <img class="cursor-pointer" src="./assets/eye-open.svg"  @click="show = !show" :class="{'hidden': !show, 'block':show }"/>
+                  <img class="cursor-pointer" src="./assets/eye-close.svg" @click="show = !show" :class="{'block': !show, 'hidden':show }"/>
+                </div>
+              </template>
+            </BaseInput>
             <hr />
             <BaseButton type="submit" label="Submit" />
           </form>
