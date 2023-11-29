@@ -31,6 +31,7 @@ const responseSuccess = ref<boolean>(false);
 const responseSuccessTimeLeft = ref<number>(2);
 
 const selectedCustomer = ref<number>(0);
+const selectedCustomerArray = ref<number[]>([]);
 const customer = reactive<Customer & CustomerErrors>({
   first_name: "",
   last_name: "",
@@ -123,6 +124,21 @@ const handleCancel = (): void => {
   toggleEditMode.value = false
 }
 
+const handleDelete = (): void => {
+  const confirmed = confirm('Are you sure you want to delete these customers? All customer data will be permanently removed. This action cannot be undone.')
+  
+  if (confirmed) {
+    customersStore
+      .deleteCustomers(selectedCustomerArray.value)
+      .then(() => {
+        selectedCustomerArray.value = [];
+      })
+      .catch((e) => {
+        console.log(e);
+    });
+  } 
+}
+
 const selectUserForUpdate = (row: any): void => {
   toggleEditMode.value = true;
 
@@ -188,6 +204,7 @@ const generateWatcher = (
 };
 
 onMounted(async (): Promise<void> => {
+  pause();
   customersStore.getAllCustomers();
 
   generateWatcher("first_name", "First Name", undefined, 50);
@@ -316,18 +333,30 @@ onMounted(async (): Promise<void> => {
         </BaseCard>
       </div>
 
-      <BaseCard key="customer_table" class="grow-0">
-        <BaseTable
-          :data="customers"
-          background-color="light"
-          is-striped
-          is-hoverable
-          is-editable
-          v-if="customers.length"
-          @update="selectUserForUpdate"
-        >
-        </BaseTable>
-      </BaseCard>
+      <div key="customer_table" class="grow-0">
+        <BaseCard v-show="selectedCustomerArray.length" class="sticky top-0 z-50 w-full">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="inline-block w-7 rounded bg-emerald-500 px-2 py-1 text-white text-center">{{ selectedCustomerArray.length }}</span> customers selected
+            </div>
+            <BaseButton label="Delete" background-color="danger" @click="handleDelete"></BaseButton>
+          </div>
+        </BaseCard>
+        <BaseCard >
+          <BaseTable
+            :data="customers"
+            background-color="light"
+            is-striped
+            is-hoverable
+            is-editable
+            enable-multi-select
+            v-model:value="selectedCustomerArray"
+            v-if="customers.length"
+            @update="selectUserForUpdate"
+          >
+          </BaseTable>
+        </BaseCard>
+      </div>
 
       <div v-if="toggleEditMode" key="update_customer" class="grow">
         <BaseCard
