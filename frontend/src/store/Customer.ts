@@ -69,12 +69,40 @@ export const useCustomers = defineStore('customers', {
                     return Promise.reject({ statusCode: response.status, statusText: result.message });
                 }
 
-                // this.customers.push(result);
+                const objIndex = this.customers.findIndex((obj) => obj.id === id);
+                this.customers[objIndex] = { ... result.data };
+
                 return Promise.resolve(response);
             } catch (error: unknown) {
                 const e = error as { statusCode: number, statusText: string };
                 console.error(`${e.statusCode}: ${e.statusText}`);
             }
-        }
+        },
+        async deleteCustomers(ids: number[]): Promise<unknown> {
+            try {
+                const response = await fetch(`${serverURLENV}/api/customers`, {
+                    method: 'DELETE',
+                    body: JSON.stringify({ids}),
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                })
+                const result = await response.json();
+
+                if (!response.ok) {
+                    return Promise.reject({ statusCode: response.status, statusText: result.message });
+                }
+
+                ids.map((id) => {
+                    const objIndex = this.customers.findIndex((obj) => obj.id === id);
+                    this.customers.splice(objIndex, 1)
+                })
+
+                return Promise.resolve(response);
+            } catch (error: unknown) {
+                const e = error as { statusCode: number, statusText: string };
+                console.error(`${e.statusCode}: ${e.statusText}`);
+            }
+        },        
     },
 })
