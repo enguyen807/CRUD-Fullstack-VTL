@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, reactive, watch, nextTick } from "vue";
+import { onMounted, ref, reactive, watch } from "vue";
 import type { WatchSource } from "vue";
 import { useCustomers } from "./store/Customer";
 import { storeToRefs } from "pinia";
@@ -211,7 +211,7 @@ onMounted(async (): Promise<void> => {
     <TransitionGroup name="fade">
       <div v-if="!toggleEditMode" key="create_customer" class="grow">
         <BaseCard
-          class="lg:w-96 lg:h-3/6 w-full grid gap-4 content-center justify-items-center text-emerald-500"
+          class="lg:w-80 lg:h-3/6 w-full grid gap-4 content-center justify-items-center text-emerald-500"
           v-if="responseSuccess"
         >
           <img class="w-28 text-emerald-500" src="./assets/circle-check.svg" />
@@ -224,7 +224,7 @@ onMounted(async (): Promise<void> => {
             @click="responseSuccess = false"
           ></BaseButton>
         </BaseCard>
-        <BaseCard class="lg:w-96 w-full" v-else>
+        <BaseCard class="lg:w-80 w-full" v-else>
           <div class="w-full">
             <h2 class="text-xl mb-1">Create Customer</h2>
             <hr />
@@ -331,7 +331,7 @@ onMounted(async (): Promise<void> => {
 
       <div v-if="toggleEditMode" key="update_customer" class="grow">
         <BaseCard
-          class="lg:w-96 lg:h-3/6 w-full grid gap-4 content-center justify-items-center text-emerald-500"
+          class="lg:w-80 lg:h-3/6 w-full grid gap-4 content-center justify-items-center text-emerald-500"
           v-if="responseSuccess"
         >
           <img class="w-28 text-emerald-500" src="./assets/circle-check.svg" />
@@ -344,7 +344,7 @@ onMounted(async (): Promise<void> => {
             @click="responseSuccess = false"
           ></BaseButton>
         </BaseCard>
-        <BaseCard class="lg:w-96 w-full" v-else>
+        <BaseCard class="lg:w-80 w-full" v-else>
           <div class="w-full">
             <h2 class="text-xl mb-1">Update Customer</h2>
             <hr />
