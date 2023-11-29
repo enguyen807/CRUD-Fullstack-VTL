@@ -36,7 +36,7 @@ class CustomerController extends Controller
         ]);
 
         if ($validate->fails()) {
-            if ($validate->errors()->has('username')) {
+            if ($request->json('username') && $validate->errors()->has('username')) {
                 return response()->json(['message'=> 'User already exists!'], JsonResponse::HTTP_CONFLICT);
             }
 
