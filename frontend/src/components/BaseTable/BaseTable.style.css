@@ -1,5 +1,5 @@
 .app-table {
-    @apply w-full text-sm text-left rtl:text-right text-stone-500 bg-white;
+    @apply w-full text-sm text-left rtl:text-right text-stone-500 bg-white table-auto;
 }
 
 .app-table.app-table--striped > tbody > tr:nth-child(even) {
