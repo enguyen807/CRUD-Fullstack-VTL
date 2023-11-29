@@ -12,7 +12,7 @@ import BaseInput from './components/BaseInput/BaseInput.vue'
 
 interface Customer {
   id?: number,
-  password: string,
+  password?: string,
   first_name: string,
   last_name: string,
   birth_date: string,
@@ -30,7 +30,7 @@ const toggleEditMode = ref<boolean>(true);
 const responseSuccess = ref<boolean>(false);
 const responseSuccessTimeLeft = ref<number>(2);
 
-const newCustomer = reactive<Customer & CustomerErrors>({
+const customer = reactive<Customer & CustomerErrors>({
   first_name: '',
   last_name: '',
   birth_date: '',
@@ -56,11 +56,11 @@ const { pause, resume } = useIntervalFn(() => {
 }, 1000)
 
 const handleSubmit = (): void => {
-  if (Object.values(newCustomer).every((currentVal) => currentVal === '')) {
+  if (Object.values(customer).every((currentVal) => currentVal === '')) {
     return
   }
 
-  customersStore.createCustomer(newCustomer)
+  customersStore.createCustomer(customer)
     .then(() => {
       responseSuccess.value = true;
       handleResetForm()
@@ -71,9 +71,13 @@ const handleSubmit = (): void => {
     });
 }
 
+const handleUpdate = (row: any): void => {
+  console.log(row)
+}
+
 const handleResetForm = (): void => {
-  Object.keys(newCustomer).forEach((key) => { newCustomer[key] = "" });
-  Object.keys(customerErrors).forEach((key) => { newCustomer[key] = "" });
+  Object.keys(customer).forEach((key) => { customer[key] = "" });
+  Object.keys(customerErrors).forEach((key) => { customer[key] = "" });
 }
 
 const generateWatcher = (
@@ -82,20 +86,20 @@ const generateWatcher = (
   min?: number | undefined,
   max?: number | undefined,
   regex?: RegExp | undefined): WatchSource => {
-  return watch(() => [newCustomer[colName]], () => {
-    if (!newCustomer[colName]) {
+  return watch(() => [customer[colName]], () => {
+    if (!customer[colName]) {
       customerErrors[`${colName}_errors`] = `${label} is required`
     }
-    else if (!/\S/.test(newCustomer[colName]!)) {
+    else if (!/\S/.test(customer[colName]!)) {
       customerErrors[`${colName}_errors`] = `${label} only contains whitespace (ie. spaces, tabs or line breaks)`
     }
-    else if (max && newCustomer[colName]!.length > max) {
+    else if (max && customer[colName]!.length > max) {
       customerErrors[`${colName}_errors`] = 'Must be 50 or fewer characters long'
     }
-    else if (min && newCustomer[colName]!.length < min) {
+    else if (min && customer[colName]!.length < min) {
       customerErrors[`${colName}_errors`] = 'Must be 6 or more characters long'
     }
-    else if (regex && !regex.test(newCustomer[colName]!)) {
+    else if (regex && !regex.test(customer[colName]!)) {
       customerErrors[`${colName}_errors`] = `${label} must contain at least 6 characters, 1 uppercase letter(A-Z), 1 lowercase letter(a-z), 1 numeric character(0-9), and 1 special character(#?!@$%^&*-).`;
     }
     else {
@@ -134,35 +138,35 @@ onMounted(async (): Promise<void> => {
                 id="first_name" 
                 label="First Name" 
                 type="text"
-                v-model="newCustomer.first_name"
+                v-model="customer.first_name"
                 :error-msg="customerErrors.first_name_errors" 
               />
               <BaseInput 
                 id="last_name" 
                 label="Last Name" 
                 type="text" 
-                v-model="newCustomer.last_name"
+                v-model="customer.last_name"
                 :error-msg="customerErrors.last_name_errors" 
               />
               <BaseInput 
                 id="birth_date" 
                 label="Birth Date" 
                 type="date" 
-                v-model="newCustomer.birth_date"
+                v-model="customer.birth_date"
                 :error-msg="customerErrors.birth_date_errors" 
               />
               <BaseInput 
                 id="username" 
                 label="Username" 
                 type="text" 
-                v-model="newCustomer.username"
+                v-model="customer.username"
                 :error-msg="customerErrors.username_errors" 
               />
               <BaseInput 
                 id="password" 
                 label="Password" 
                 :type="show ? 'password' : 'text'" 
-                v-model="newCustomer.password"
+                v-model="customer.password"
                 :error-msg="customerErrors.password_errors" 
                 toggle-password
               >
@@ -184,7 +188,15 @@ onMounted(async (): Promise<void> => {
         </BaseCard>
       </div>
       <BaseCard key="customer_table" class="grow-0">
-        <BaseTable :data="customers" background-color="light" is-striped is-hoverable is-editable v-if="customers.length">
+        <BaseTable 
+          :data="customers" 
+          background-color="light" 
+          is-striped 
+          is-hoverable 
+          is-editable 
+          v-if="customers.length"
+          @update="handleUpdate"
+        >
         </BaseTable>
       </BaseCard>
       <div v-if="toggleEditMode" key="update_customer" class="grow">
@@ -204,35 +216,35 @@ onMounted(async (): Promise<void> => {
                 id="first_name" 
                 label="First Name" 
                 type="text"
-                v-model="newCustomer.first_name"
+                v-model="customer.first_name"
                 :error-msg="customerErrors.first_name_errors" 
               />
               <BaseInput 
                 id="last_name" 
                 label="Last Name" 
                 type="text" 
-                v-model="newCustomer.last_name"
+                v-model="customer.last_name"
                 :error-msg="customerErrors.last_name_errors" 
               />
               <BaseInput 
                 id="birth_date" 
                 label="Birth Date" 
                 type="date" 
-                v-model="newCustomer.birth_date"
+                v-model="customer.birth_date"
                 :error-msg="customerErrors.birth_date_errors" 
               />
               <BaseInput 
                 id="username" 
                 label="Username" 
                 type="text" 
-                v-model="newCustomer.username"
+                v-model="customer.username"
                 :error-msg="customerErrors.username_errors" 
               />
               <BaseInput 
                 id="password" 
                 label="Password" 
                 :type="show ? 'password' : 'text'" 
-                v-model="newCustomer.password"
+                v-model="customer.password"
                 :error-msg="customerErrors.password_errors" 
                 toggle-password
               >
@@ -246,8 +258,8 @@ onMounted(async (): Promise<void> => {
                 </template>
               </BaseInput>
               <div class="flex gap-3 mt-5">
-                <BaseButton type="submit" label="Submit" background-color="success" />
-                <BaseButton type="button" label="Clear" @click="handleResetForm" background-color="secondary" />
+                <BaseButton type="submit" label="Update" background-color="success" />
+                <BaseButton type="button" label="Cancel" @click="handleResetForm" background-color="secondary" />
               </div>
             </form>
           </div>
