@@ -59,17 +59,23 @@ class CustomerController extends Controller
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function update(int $id, Request $request): JsonResponse
+    public function update(Request $request, $id): JsonResponse
     {
-        $validate = Validator::make($request->all(), [
+        $validate = Validator::make(json_decode($request->getContent(),true), [
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
-            'username' => 'required|string|min:6|max:50|unique:customers,username',
-            'birth_date' => 'required|date_format:d.m.Y|before:today|after:1900-01-01',
-            'password' => 'required|min:6|max:50|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+            'username' => 'required|string|min:6|max:50|unique:customers,username,' . $id,
+            'birth_date' => 'required|before:today|after:1900-01-01',
+            'password' => 'sometimes|required|min:6|max:50|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
         ]);
 
         if ($validate->fails()) {
+            if (
+                $request->json('username') && 
+                $validate->errors()->has('username') 
+                ) {
+                return response()->json(['message'=> 'User already exists!'], JsonResponse::HTTP_CONFLICT);
+            }
             return response()->json(['error' => $validate->errors()], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
