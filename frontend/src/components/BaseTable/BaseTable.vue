@@ -15,6 +15,7 @@ const props = withDefaults(
         isHoverable?: boolean,
         isStriped?: boolean,
         isRounded?: boolean,
+        enableMultiSelect?: boolean,
         enableEditableRows?: boolean,
         backgroundColor?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'light' | 'dark'
     }>(),
@@ -50,6 +51,7 @@ const classes = computed(() => ({
     <table :class="classes">
         <thead>
             <tr>
+                <th v-if="enableMultiSelect"></th>
                 <th v-for="(header, index) in tableHeaders" :key="index" scope="col">
                     {{ header }}
                 </th>
@@ -60,6 +62,7 @@ const classes = computed(() => ({
         </thead>
         <tbody>
             <tr v-for="row in data" :key="row.id">
+                <td v-if="enableMultiSelect"><input type="checkbox" class="rounded" /></td>
                 <th class="font-medium text-gray-900 whitespace-nowrap">{{ row.id }}</th>
                 <td>{{ row.first_name }}</td>
                 <td>{{ row.last_name }}</td>
