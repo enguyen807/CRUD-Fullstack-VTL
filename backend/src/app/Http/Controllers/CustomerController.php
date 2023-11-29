@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -17,7 +18,7 @@ class CustomerController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json([ 'data' => Customer::all()], 200);
+        return response()->json([ 'data' => Customer::all()], JsonResponse::HTTP_OK);
     }
 
     /**
@@ -50,7 +51,7 @@ class CustomerController extends Controller
             'username'   => $request->json('username'),
             'password'   => Hash::make($request->json('password')),
         ]);
-        return response()->json([ 'data' => $customer ], 200);
+        return response()->json([ 'data' => $customer ], JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -90,11 +91,11 @@ class CustomerController extends Controller
                 'password'   => Hash::make($request->json('password')),
             ]);
     
-            return response()->json([ 'data' => $customer ], 200);
+            return response()->json([ 'data' => $customer ], JsonResponse::HTTP_OK);
         }
         catch (ModelNotFoundException $e)
         {
-            return response()->json([ 'error' => $e->getMessage() ], 404);
+            return response()->json([ 'error' => $e->getMessage() ], JsonResponse::HTTP_NOT_FOUND);
         }
 
     }
@@ -104,13 +105,23 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return mixed
      */
-    public function destroy(int $id)
+    public function destroy(Request $request)
     {
         try {
-            Customer::findOrFail($id)->delete();
-            return response()->json(['status' => 410, 'message' => 'Deleted Successfully'], 410);
+            $validate = Validator::make(json_decode($request->getContent(), true), [
+                'ids' => 'required|array',
+                'ids.*' => 'integer'
+            ]);
+
+            if ($validate->fails()) {
+                return response()->json(['error' => $validate->errors()], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            DB::table('customers')->whereIn('id', $request->json('ids'))->delete();
+
+            return response()->json(['status' => JsonResponse::HTTP_OK, 'message' => 'Deleted Successfully'], JsonResponse::HTTP_OK);
         } catch (ModelNotFoundException $e) {
-            return response()->json([ 'error' => $e->getMessage() ], 404);
+            return response()->json([ 'error' => $e->getMessage() ], JsonResponse::HTTP_NOT_FOUND);
         }
 
     }       
