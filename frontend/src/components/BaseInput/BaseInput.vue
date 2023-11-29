@@ -5,10 +5,11 @@ import { computed } from 'vue';
 import { useDebounceFn } from '@vueuse/core'
 
 const props = defineProps<{
-    modelValue: string | number | Date | null,
+    modelValue: string | number | Date | null | undefined,
     id: string,
     label: string,
     type: string,
+    isRequired?: boolean,
     togglePassword?: boolean,
     placeholder?: string,
     isDisabled?: boolean,
@@ -18,9 +19,10 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void;
+    (e: 'change', value: string): void;
 }>();
 
-const handleOnKeyUp = useDebounceFn((event: Event): void => {
+const handleInput = useDebounceFn((event: Event): void => {
     emit("update:modelValue", (event.target as HTMLInputElement).value);
 }, 500);
 
@@ -38,12 +40,12 @@ const classes = computed(() => ({
         <div class="relative">
             <input 
                 autocomplete="new-password" 
-                required
+                :required="isRequired"
                 :id="id" 
                 :type="type" 
                 :placeholder="placeholder" 
                 :value="modelValue" 
-                @input="handleOnKeyUp"
+                @input="handleInput"
                 min='1900-01-01'
                 :max="new Date().toISOString().split('T')[0]"
             />

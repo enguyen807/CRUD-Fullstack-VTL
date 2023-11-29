@@ -4,6 +4,10 @@ import './BaseTable.style.css';
 import { computed } from 'vue';
 import BaseButton from '../BaseButton/BaseButton.vue';
 
+interface Object {
+    [key: string]: string
+}
+
 const props = withDefaults(
     defineProps<{
         data: Array<any>,
@@ -16,6 +20,14 @@ const props = withDefaults(
     }>(),
     { isRounded: true, enableEditableRows: false, backgroundColor: 'primary' }
 );
+
+const emit = defineEmits<{
+    (e: 'update', row: Object): void;
+}>();
+
+const onClick = (row: Object) => {
+    emit("update", row)
+};
 
 const tableHeaders = computed((): string[] => {
     return Object.keys(props.data[0]).map(head => head.replace(/_/g," "));
@@ -54,7 +66,7 @@ const classes = computed(() => ({
                 <td>{{ row.birth_date }}</td>
                 <td>{{ row.username }}</td>
                 <td v-if="props.isEditable">
-                    <BaseButton label="Edit" background-color="warning"></BaseButton>
+                    <BaseButton label="Edit" background-color="warning" @click="onClick(row)"></BaseButton>
                 </td>
             </tr>
         </tbody>
