@@ -13,7 +13,7 @@ class Customer extends Model
      * @var string[]
      */
     protected $fillable = [
-        'first_name', 'last_name', 'birth_date', 'username', 'password'
+        'first_name', 'last_name', 'birth_date', 'username', 'password', 'ids'
     ];
 
     /**
