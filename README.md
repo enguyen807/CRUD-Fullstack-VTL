@@ -1,19 +1,26 @@
 # Get Started
 1. In Backend Folder
-    a. Duplicate .env.example -> .env
-    b. Install backend files
-        i. docker-compose run —-rm composer install
-    b. Run table migrations
-        i.  docker-compose run --rm artisan migrate
-    c. Build and start backend images
-        i.  docker-compose up -d --build server  
+    1. Duplicate .env.example -> .env
+       
+    2. Install backend files
+       1. ``` docker-compose run —-rm composer install ```
+      
+    3. Run table migrations
+       1. ``` docker-compose run --rm artisan migrate ```
+
+    4. Build and start backend images
+       1. ``` docker-compose up -d --build server ```
 
 2. In Frontend Folder
-    a. Duplicate .env.example -> .env.development.local
-    b. Install frontend files
-        i. docker-compose run --rm npm install
-    c. Build and Start Frontend image
-        i. docker-compose up -d --build frontend
+    1. Duplicate .env.example -> .env.development.local
+       
+    2. Install frontend files
+        1. ```docker-compose run --rm npm install```
+           
+    3. Build and Start Frontend image
+        1. ```docker-compose up -d --build frontend```
+
+# Other useful commands #
 
 ## Frontend
     # Build Frontend
