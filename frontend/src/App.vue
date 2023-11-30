@@ -26,7 +26,7 @@ interface CustomerErrors {
 const customersStore = useCustomers();
 const { customers } = storeToRefs(customersStore);
 const show = ref<boolean>(true);
-const toggleEditMode = ref<boolean>(true);
+const toggleEditMode = ref<boolean>(false);
 const responseSuccess = ref<boolean>(false);
 const responseSuccessTimeLeft = ref<number>(2);
 
@@ -95,8 +95,6 @@ const handleSubmit = (): void => {
 };
 
 const handleUpdate = (): void => {
-  // console.log('Updated:', customer);
-
   let payload = customer;
 
   if (!customer.password) {
