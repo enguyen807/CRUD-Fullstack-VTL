@@ -10,8 +10,8 @@ class CustomerDeleteTest extends TestCase
     /** @test */
     public function it_can_delete_a_customer()
     {
-        $this->json('delete', 'api/customers/17')
-            ->seeStatusCode(Response::HTTP_GONE)
+        $this->json('delete', 'api/customers', [ 'ids' => [11] ])
+            ->seeStatusCode(Response::HTTP_OK)
             ->seeJsonStructure([
                 "status",
                 "message"

@@ -18,7 +18,7 @@ class CustomerUpdateTest extends TestCase
             'password'   => $this->faker->password
         ];
 
-        $this->json('put', 'api/customers/4', $parameters)
+        $this->json('put', 'api/customers/4', $parameters, ['Content-Type' => 'text/plain'])
             ->seeStatusCode(Response::HTTP_OK)
             ->seeJsonStructure(
                 [

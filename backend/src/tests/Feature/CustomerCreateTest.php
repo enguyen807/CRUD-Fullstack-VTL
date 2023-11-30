@@ -18,8 +18,8 @@ class CustomerCreateTest extends TestCase
             'password'   => $this->faker->password
         ];
 
-        $this->json('post', 'api/customers', $parameters)
-            ->seeStatusCode(Response::HTTP_OK)
+        $this->json('post', 'api/customers', $parameters, ['Content-Type' => 'text/plain'])        
+            ->seeStatusCode(Response::HTTP_CREATED)
             ->seeJsonStructure(
                 [
                     'data' => 
